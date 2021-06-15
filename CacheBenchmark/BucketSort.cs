@@ -15,7 +15,6 @@ namespace CacheBenchmark
                 return;
             }
             
-
             // 1) Create n empty buckets
             List<float>[] buckets = new List<float>[n];
 
@@ -24,10 +23,12 @@ namespace CacheBenchmark
                 buckets[i] = new List<float>();
             }
 
+            float idx = 0;
             // 2) Put array elements in different buckets
             for (int i = 0; i < n; i++)
             {
-                float idx = arr[i] * n;
+                idx = (arr[i] * n >= n) ? (idx = arr[i] / n) : (idx = arr[i] * n);
+
                 buckets[(int)idx].Add(arr[i]);
             }
 

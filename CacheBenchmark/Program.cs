@@ -19,7 +19,7 @@ namespace CacheBenchmark
 
             // Bucket Sort
             var bucketSort = new BucketSort();
-            float[] arr = { (float)0.897, (float)0.565,
+            float[] arr = { (float)0.897, (float)1, (float)0.565,
                    (float)0.656, (float)0.1234,
                    (float)0.665, (float)0.3434 };
 
