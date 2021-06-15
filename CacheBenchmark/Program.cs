@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BenchmarkDotNet.Running;
+using System;
 
 namespace CacheBenchmark
 {
@@ -6,33 +7,35 @@ namespace CacheBenchmark
     {
         static void Main(string[] args)
         {
-            // Bubble Sort
-            int[] bubbleArray =  {100, 9, 34, 434, 34, 382, 50, 2, 7};
-            var bubbleSort = new BubbleSort.BubbleSort();
-            var list = bubbleSort.DoBubbleSort(bubbleArray);
+            //// Bubble Sort
+            //int[] bubbleArray =  {100, 9, 34, 434, 34, 382, 50, 2, 7};
+            //var bubbleSort = new BubbleSort();
+            //var list = bubbleSort.Sort(bubbleArray);
 
-            Console.WriteLine("Bubble Sort: ");
-            PrintArray(bubbleArray);
+            //Console.WriteLine("Bubble Sort: ");
+            //PrintArray(bubbleArray);
 
-            // Merge Sort
-            int[] mergeArray = { 12, 11, 13, 5, 6, 7 };
+            //// Merge Sort
+            //int[] mergeArray = { 12, 11, 13, 5, 6, 7 };
 
-            MergeSort ob = new MergeSort();
-            ob.Sort(mergeArray, 0, mergeArray.Length - 1);
-            Console.WriteLine("\nMerge Sort:");
-            PrintArray(mergeArray);
-  
-            // Bucket Sort
-            var bucketSort = new BucketSort();
-            float[] bucketArray = { (float)0.897, (float)1, (float)0.565,
-                   (float)0.656, (float)0.1234,
-                   (float)0.665, (float)0.3434 };
+            //MergeSort ob = new MergeSort();
+            //ob.Sort(mergeArray, 0, mergeArray.Length - 1);
+            //Console.WriteLine("\nMerge Sort:");
+            //PrintArray(mergeArray);
 
-            int n = bucketArray.Length;
-            bucketSort.Sort(bucketArray, n);
+            //// Bucket Sort
+            //var bucketSort = new BucketSort();
+            //float[] bucketArray = { (float)0.897, (float)1, (float)0.565,
+            //       (float)0.656, (float)0.1234,
+            //       (float)0.665, (float)0.3434 };
 
-            Console.WriteLine("\nBucket Sort: ");
-            PrintArray(bucketArray);
+            //int n = bucketArray.Length;
+            //bucketSort.Sort(bucketArray, n);
+
+            //Console.WriteLine("\nBucket Sort: ");
+            //PrintArray(bucketArray);
+
+            var summary = BenchmarkRunner.Run<Benchmarks>();
         }
 
         public static void PrintArray(int[] arr)

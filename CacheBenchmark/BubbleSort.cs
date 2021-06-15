@@ -1,13 +1,13 @@
-namespace CacheBenchmark.BubbleSort
+namespace CacheBenchmark
 {
     class BubbleSort{
-        public int[] DoBubbleSort(int[] list)
+        public int[] Sort(int[] list)
         {
             bool sorted;
 	 
-            //solange nicht alle paare bei jedem  Durchlauf     
+            //solange nicht alle Paare bei jedem  Durchlauf     
             //sortiert sind, Alg. wiederholen. 
-            //->BubbleSort verfahren
+            //->BubbleSort Verfahren
 
             do
             {
