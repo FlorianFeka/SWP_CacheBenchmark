@@ -1,6 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Jobs;
+using System;
 
 namespace CacheBenchmark
 {
@@ -9,19 +10,30 @@ namespace CacheBenchmark
     //[SimpleJob(runtimeMoniker: RuntimeMoniker.Net48, launchCount: 1, warmupCount: 1, targetCount: 1, invocationCount: 1, runStrategy: RunStrategy.ColdStart)]
     public class Benchmarks
     {
-        private int[] intArray{get;set;}
+        private int _amdRyzen53600L1CacheSize = 384 * 1024;
+        private int[] _simpleIntArray { get; set; }
+        //[Params(100, 200, 300)]
+        //public int _simpleIntArraySize;
 
-        private BubbleSort bubbleSort = new();
+        private readonly BubbleSort _bubbleSort = new();
 
-        public Benchmarks()
+        [GlobalSetup]
+        public void BenchmarksSetup()
         {
-            this.intArray = new int[] { 2, 7, 1 };
+            var arrSize = _amdRyzen53600L1CacheSize / sizeof(int);
+            Console.WriteLine($"ArrSize: {arrSize}");
+            Random ran = new();
+            _simpleIntArray = new int[arrSize];
+            for (int i = 0; i < arrSize; i++)
+            {
+                _simpleIntArray[i] = ran.Next();
+            }
         }
 
         [Benchmark(Baseline = true)]
-        public void BubbleSort()
-        {          
-            bubbleSort.Sort(this.intArray);
+        public void BubbleSort_SimpleIntArraySameSizeAsCpuCache()
+        {
+            _bubbleSort.Sort(_simpleIntArray);
         }
     }
 }
