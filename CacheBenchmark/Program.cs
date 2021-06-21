@@ -8,20 +8,22 @@ namespace CacheBenchmark
         static void Main(string[] args)
         {
             //// Bubble Sort
-            //int[] bubbleArray =  {100, 9, 34, 434, 34, 382, 50, 2, 7};
-            //var bubbleSort = new BubbleSort();
-            //var list = bubbleSort.Sort(bubbleArray);
+            /*
+            int[] bubbleArray =  {100, 9, 34, 434, 34, 382, 50, 2, 7};
+            var bubbleSort = new BubbleSort();
+            var list = bubbleSort.Sort(bubbleArray, ((a,b) => a < b));
 
-            //Console.WriteLine("Bubble Sort: ");
-            //PrintArray(bubbleArray);
+            Console.WriteLine("Bubble Sort: ");
+            PrintArray(bubbleArray);
+            */
 
             //// Merge Sort
-            //int[] mergeArray = { 12, 11, 13, 5, 6, 7 };
+            int[] mergeArray = { 12, 11, 13, 5, 6, 7 };
 
-            //MergeSort ob = new MergeSort();
-            //ob.Sort(mergeArray, 0, mergeArray.Length - 1);
-            //Console.WriteLine("\nMerge Sort:");
-            //PrintArray(mergeArray);
+            MergeSort ob = new MergeSort();
+            ob.Sort(mergeArray, 0, mergeArray.Length - 1, ((a,b) => a < b), ((a,b) => a <= b));
+            Console.WriteLine("\nMerge Sort:");
+            PrintArray(mergeArray);
 
             //// Bucket Sort
             //var bucketSort = new BucketSort();
@@ -35,7 +37,7 @@ namespace CacheBenchmark
             //Console.WriteLine("\nBucket Sort: ");
             //PrintArray(bucketArray);
 
-            var summary = BenchmarkRunner.Run<Benchmarks>();
+            // var summary = BenchmarkRunner.Run<Benchmarks>();
         }
 
         public static void PrintArray(int[] arr)

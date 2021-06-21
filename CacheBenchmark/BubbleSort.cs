@@ -1,7 +1,9 @@
+using System;
+
 namespace CacheBenchmark
 {
     class BubbleSort{
-        public int[] Sort(int[] list)
+        public T[] Sort<T>(T[] list, Func<T, T, bool> sortFunc)
         {
             bool sorted;
 	 
@@ -15,11 +17,11 @@ namespace CacheBenchmark
 
                 for (int i = 0; i < list.Length - 1; i++)
                 {
-                    if (list[i] > list[i + 1])
+                    if (sortFunc(list[i], list[i + 1]))
                     { 
 			 
                         //zahlen tauschen (nur ein Paar)
-                        int temp = list[i];
+                        var temp = list[i];
                         list[i] = list[i + 1];
                         list[i + 1] = temp;
 			   

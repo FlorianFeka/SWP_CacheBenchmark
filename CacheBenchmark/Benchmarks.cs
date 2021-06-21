@@ -33,7 +33,7 @@ namespace CacheBenchmark
         [Benchmark(Baseline = true)]
         public void BubbleSort_SimpleIntArraySameSizeAsCpuCache()
         {
-            _bubbleSort.Sort(_simpleIntArray);
+            _bubbleSort.Sort(_simpleIntArray, ((a,b) => a>b));
         }
     }
 }

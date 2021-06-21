@@ -1,4 +1,6 @@
-﻿namespace CacheBenchmark
+﻿using System;
+
+namespace CacheBenchmark
 {
     public class MergeSort
     {
@@ -6,7 +8,7 @@
         // Merges two subarrays of []arr.
         // First subarray is arr[l..m]
         // Second subarray is arr[m+1..r]
-        private void Merge(int[] arr, int l, int m, int r)
+        private void Merge<T>(T[] arr, int l, int m, int r, Func<T,T,bool> sortFunc)
         {
             // Find sizes of two
             // subarrays to be merged
@@ -14,8 +16,8 @@
             int n2 = r - m;
 
             // Create temp arrays
-            int[] L = new int[n1];
-            int[] R = new int[n2];
+            T[] L = new T[n1];
+            T[] R = new T[n2];
             int i, j;
 
             // Copy data to temp arrays
@@ -36,7 +38,7 @@
             int k = l;
             while (i < n1 && j < n2)
             {
-                if (L[i] <= R[j])
+                if (sortFunc(L[i], R[j]))
                 {
                     arr[k] = L[i];
                     i++;
@@ -71,22 +73,25 @@
         // Main function that
         // sorts arr[l..r] using
         // merge()
-        public void Sort(int[] arr, int l, int r)
+        //public T[] Sort<T>(T[] arr, int l, int r)
+        public T[] Sort<T>(T[] list, int l, int r, Func<int,int, bool> sortFunc, Func<T,T,bool> mergeFunc)
         {
-            if (l < r)
+            if (sortFunc(l, r))
             {
                 // Find the middle
                 // point
                 int m = l + (r - l) / 2;
-
+                
                 // Sort first and
                 // second halves
-                Sort(arr, l, m);
-                Sort(arr, m + 1, r);
+                Sort(list, l,m, ((l,r) => l < r), mergeFunc);
+                Sort(list, m + 1, r, ((l,r) => l<r), mergeFunc);
 
                 // Merge the sorted halves
-                Merge(arr, l, m, r);
+                Merge(list, l, m, r, mergeFunc);
             }
+
+            return list;
         }
 
     }
