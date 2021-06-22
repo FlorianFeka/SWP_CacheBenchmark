@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CacheBenchmark
 {
@@ -6,34 +7,51 @@ namespace CacheBenchmark
     {
         // Function to sort arr[] of size n
         // using bucket sort
-        public void Sort(float[] arr, int n)
+        public void Sort<T, G>(T[] arr, int n, Func<T, G> selectItem, Func<G, G, bool> sortFunc) where G : struct
         {
+            if(typeof(G) != typeof(int) && typeof(G) != typeof(float))
+            {
+                throw new Exception("Can only sort numbers.");
+            }
+
             if (n <= 0)
             {
                 return;
             }
             
             // 1) Create n empty buckets
-            List<float>[] buckets = new List<float>[n];
+            List<T>[] buckets = new List<T>[n];
 
             for (int i = 0; i < n; i++)
             {
-                buckets[i] = new List<float>();
+                buckets[i] = new List<T>();
             }
 
             float idx = 0;
             // 2) Put array elements in different buckets
             for (int i = 0; i < n; i++)
             {
-                idx = (arr[i] * n >= n) ? (idx = arr[i] / n) : (idx = arr[i] * n);
-
+                dynamic value = (dynamic)selectItem(arr[i]);
+                idx = (value * n >= n) ? value / n : value * n;
                 buckets[(int)idx].Add(arr[i]);
             }
 
             // 3) Sort individual buckets
             for (int i = 0; i < n; i++)
             {
-                buckets[i].Sort();
+                //sortFunc(list[i], list[i + 1])
+
+                for (int j = 0; j < buckets[i].Count-1; j++)
+                {
+                    var a = selectItem(buckets[i][j]);
+                    if (!sortFunc((dynamic)selectItem(buckets[i][j]), (dynamic)selectItem(buckets[i][j + 1])))
+                    {
+                        //zahlen tauschen (nur ein Paar)
+                        var temp = buckets[i][j];
+                        buckets[i][j] = buckets[i][j + 1];
+                        buckets[i][j + 1] = temp;
+                    }
+                }
             }
 
             // 4) Concatenate all buckets into arr[]
