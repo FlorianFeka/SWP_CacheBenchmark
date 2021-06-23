@@ -48,13 +48,15 @@ namespace CacheBenchmark
             //    }
             //};
 
+            //int[] arr = { 11, 9, 3, 6, 1, 8, 0, 12 };
+
             //int n = bucketArray.Length;
-            //bucketSort.Sort(games, games.Length, (a) => a.Price, (a, b) => a <= b);
+            //bucketSort.Sort(bucketArray, bucketArray.Length, (a) => a, (a, b) => a <= b);
 
             //Console.WriteLine("\nBucket Sort: ");
-            //PrintArray(games, (a) => a.Price);
+            //PrintArray(bucketArray, (a) => a);
 
-            //var summary = BenchmarkRunner.Run<Benchmarks>();
+            var summary = BenchmarkRunner.Run<Benchmarks>();
         }
 
         public static void PrintArray(int[] arr)
