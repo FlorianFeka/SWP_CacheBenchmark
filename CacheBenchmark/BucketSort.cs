@@ -14,26 +14,35 @@ namespace CacheBenchmark
                 throw new Exception("Can only sort numbers.");
             }
 
-            if (n <= 0)
+            if (n <= 0 || n < arr.Length)
             {
-                return;
+                throw new ArgumentException(nameof(n));
             }
             
             // 1) Create n empty buckets
             List<T>[] buckets = new List<T>[n];
+
 
             for (int i = 0; i < n; i++)
             {
                 buckets[i] = new List<T>();
             }
 
-            float idx = 0;
+            //float idx = 0;
+
+            var max = GetMax(arr, selectItem);
+            var min = GetMin(arr, selectItem);
+            var elementRange = (int)(max - min) / n + 1;
+
             // 2) Put array elements in different buckets
             for (int i = 0; i < n; i++)
             {
                 dynamic value = (dynamic)selectItem(arr[i]);
-                idx = (value * n >= n) ? value / n : value * n;
-                buckets[(int)idx].Add(arr[i]);
+                var difference = value - min;
+                var bucketIndex = (int)difference / elementRange;
+                buckets[bucketIndex].Add(arr[i]);
+                //idx = (value * n >= n) ? value / n : value * n;
+                //buckets[(int)idx].Add(arr[i]);
             }
 
             // 3) Sort individual buckets
@@ -43,7 +52,6 @@ namespace CacheBenchmark
 
                 for (int j = 0; j < buckets[i].Count-1; j++)
                 {
-                    var a = selectItem(buckets[i][j]);
                     if (!sortFunc((dynamic)selectItem(buckets[i][j]), (dynamic)selectItem(buckets[i][j + 1])))
                     {
                         //zahlen tauschen (nur ein Paar)
@@ -63,6 +71,38 @@ namespace CacheBenchmark
                     arr[index++] = buckets[i][j];
                 }
             }
+        }
+
+        public dynamic GetMax<T, G>(T[] arr, Func<T, G> selectItem)
+        {
+            dynamic max = 0;
+
+            foreach (var item in arr)
+            {
+                var value = selectItem(item);
+                if (max < value)
+                {
+                    max = value;
+                }
+            }
+
+            return max;
+        }
+
+        public dynamic GetMin<T, G>(T[] arr, Func<T, G> selectItem)
+        {
+            dynamic min = 0;
+
+            foreach (var item in arr)
+            {
+                var value = selectItem(item);
+                if (min > value)
+                {
+                    min = value;
+                }
+            }
+
+            return min;
         }
     }
 }
