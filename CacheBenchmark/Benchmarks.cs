@@ -9,11 +9,12 @@ namespace CacheBenchmark
     [GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]
     [CategoriesColumn]
     [SimpleJob(runtimeMoniker: RuntimeMoniker.Net50)]
-    [SimpleJob(runtimeMoniker: RuntimeMoniker.NetCoreApp31)]
+    //[SimpleJob(runtimeMoniker: RuntimeMoniker.NetCoreApp31)]
     public class Benchmarks
     {
         // L1 Cache 384 KB; L2 Cache 3 MB; L3 Cache 32 MB
-        private int _amdRyzen53600L3CacheSize = 32 * 1024 * 1024;
+        //private int _amdRyzen53600L3CacheSize = 32 * 1024 * 1024;
+        private int _amdRyzen53600L3CacheSize = 384 * 1024;
         //private int _amdRyzen53600L3CacheSize = 9000;
         private int[] _simpleIntArrayCpuCacheSized { get; set; }
         private int[] _simpleIntArrayBiggerThenCpuCache { get; set; }
@@ -31,6 +32,7 @@ namespace CacheBenchmark
             var arrSize = _amdRyzen53600L3CacheSize / sizeof(int);
             //var arrSize = _amdRyzen53600L3CacheSize;
             Console.WriteLine($"ArrSize: {arrSize}");
+
             Random ran = new();
             _simpleIntArrayCpuCacheSized = new int[arrSize];
             for (int i = 0; i < arrSize; i++)
@@ -76,13 +78,13 @@ namespace CacheBenchmark
         [BenchmarkCategory("Gesamtes Datenarray passt in den CPU-Cache"), Benchmark(Baseline = true)]
         public void BubbleSort_SimpleIntArraySameSizeAsCpuCache()
         {
-            _bubbleSort.Sort(_simpleIntArrayCpuCacheSized, (a,b) => a <= b);
+            _bubbleSort.Sort(_simpleIntArrayCpuCacheSized, (a, b) => a <= b);
         }
 
         [BenchmarkCategory("Gesamtes Datenarray passt in den CPU-Cache"), Benchmark]
         public void MergeSort_SimpleIntArraySameSizeAsCpuCache()
         {
-            _mergeSort.Sort(_simpleIntArrayCpuCacheSized, 2, 10, (a, b) => a < b, (a, b) => a <= b);
+            _mergeSort.Sort(_simpleIntArrayCpuCacheSized, 0, _simpleIntArrayCpuCacheSized.Length - 1, (a, b) => a <= b);
         }
 
         [BenchmarkCategory("Gesamtes Datenarray passt in den CPU-Cache"), Benchmark]
@@ -102,7 +104,7 @@ namespace CacheBenchmark
         [BenchmarkCategory("Array ist um 90 Items zu groß für den Cache"), Benchmark]
         public void MergeSort_SimpleIntArrayBiggerSizeAsCpuCache()
         {
-            _mergeSort.Sort(_simpleIntArrayBiggerThenCpuCache, 2, 10, (a, b) => a < b, (a, b) => a <= b);
+            _mergeSort.Sort(_simpleIntArrayBiggerThenCpuCache, 0, _simpleIntArrayCpuCacheSized.Length - 1, (a, b) => a <= b);
         }
 
         [BenchmarkCategory("Array ist um 90 Items zu groß für den Cache"), Benchmark]
@@ -122,7 +124,7 @@ namespace CacheBenchmark
         [BenchmarkCategory("Array Eintrag ist ein simpler Integer"), Benchmark]
         public void MergeSort_SimpleIntArraySameSizeAsCpuCache2()
         {
-            _mergeSort.Sort(_simpleIntArrayCpuCacheSized, 2, 10, (a, b) => a < b, (a, b) => a <= b);
+            _mergeSort.Sort(_simpleIntArrayCpuCacheSized, 0, _simpleIntArrayCpuCacheSized.Length - 1, (a, b) => a <= b);
         }
 
         [BenchmarkCategory("Array Eintrag ist ein simpler Integer"), Benchmark]
@@ -143,7 +145,7 @@ namespace CacheBenchmark
         [BenchmarkCategory("Array Eintrag ist ein komplexes Struct"), Benchmark]
         public void MergeSort_ComplexStructArraySameSizeAsCpuCache()
         {
-            _mergeSort.Sort(_complexStructArrayCpuCacheSized, 2, 10, (a, b) => a < b, (a, b) => a.Id <= b.Id);
+            _mergeSort.Sort(_complexStructArrayCpuCacheSized, 0, _simpleIntArrayCpuCacheSized.Length - 1, (a, b) => a.Id <= b.Id);
         }
 
         [BenchmarkCategory("Array Eintrag ist ein komplexes Struct"), Benchmark]
@@ -163,7 +165,7 @@ namespace CacheBenchmark
         [BenchmarkCategory("Array enthält direkt die konkreten Inhalte"), Benchmark]
         public void MergeSort_SimpleIntArraySameSizeAsCpuCache3()
         {
-            _mergeSort.Sort(_simpleIntArrayCpuCacheSized, 2, 10, (a, b) => a < b, (a, b) => a <= b);
+            _mergeSort.Sort(_simpleIntArrayCpuCacheSized, 0, _simpleIntArrayCpuCacheSized.Length - 1, (a, b) => a <= b);
         }
 
         [BenchmarkCategory("Array enthält direkt die konkreten Inhalte"), Benchmark]
@@ -184,7 +186,7 @@ namespace CacheBenchmark
         [BenchmarkCategory("Jeder einzelne Inhalt wird separat erzeugt (allokiert)"), Benchmark]
         public void MergeSort_ObjectArraySameSizeAsCpuCache()
         {
-            _mergeSort.Sort(_objectArrayCpuCacheSized, 2, 10, (a, b) => a < b, (a, b) => a.Id <= b.Id);
+            _mergeSort.Sort(_objectArrayCpuCacheSized, 0, _simpleIntArrayCpuCacheSized.Length - 1, (a, b) => a.Id <= b.Id);
         }
 
         [BenchmarkCategory("Jeder einzelne Inhalt wird separat erzeugt (allokiert)"), Benchmark]

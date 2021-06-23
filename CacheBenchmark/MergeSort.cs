@@ -18,23 +18,17 @@ namespace CacheBenchmark
             // Create temp arrays
             T[] L = new T[n1];
             T[] R = new T[n2];
-            int i, j;
 
+            int i, j;
             // Copy data to temp arrays
             for (i = 0; i < n1; ++i)
                 L[i] = arr[l + i];
             for (j = 0; j < n2; ++j)
                 R[j] = arr[m + 1 + j];
 
-            // Merge the temp arrays
-
-            // Initial indexes of first
-            // and second subarrays
-            i = 0;
-            j = 0;
-
             // Initial index of merged
             // subarry array
+            i = j = 0;
             int k = l;
             while (i < n1 && j < n2)
             {
@@ -74,9 +68,9 @@ namespace CacheBenchmark
         // sorts arr[l..r] using
         // merge()
         //public T[] Sort<T>(T[] arr, int l, int r)
-        public T[] Sort<T>(T[] list, int l, int r, Func<int,int, bool> sortFunc, Func<T,T,bool> mergeFunc)
+        public T[] Sort<T>(T[] list, int l, int r, Func<T,T,bool> mergeFunc)
         {
-            if (sortFunc(l, r))
+            if (l < r)
             {
                 // Find the middle
                 // point
@@ -84,8 +78,8 @@ namespace CacheBenchmark
                 
                 // Sort first and
                 // second halves
-                Sort(list, l,m, ((l,r) => l < r), mergeFunc);
-                Sort(list, m + 1, r, ((l,r) => l<r), mergeFunc);
+                Sort(list, l, m, mergeFunc);
+                Sort(list, m + 1, r, mergeFunc);
 
                 // Merge the sorted halves
                 Merge(list, l, m, r, mergeFunc);
